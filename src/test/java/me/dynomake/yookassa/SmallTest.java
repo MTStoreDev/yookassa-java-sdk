@@ -1,5 +1,6 @@
 package me.dynomake.yookassa;
 
+import com.google.gson.JsonObject;
 import me.dynomake.yookassa.exception.BadRequestException;
 import me.dynomake.yookassa.exception.UnspecifiedShopInformation;
 import me.dynomake.yookassa.model.Amount;
@@ -7,7 +8,6 @@ import me.dynomake.yookassa.model.Payment;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -20,19 +20,14 @@ public class SmallTest {
         Yookassa yookassa = Yookassa.initialize(1, "");
 
         // запросим платеж с банковской карты и сохраним её)))
-        Payment payment = yookassa.createPayment("bank_card", true,
-                new Amount(BigDecimal.valueOf(1), "EUR"), "Test Payment", "https://suuft.naifu.works");
 
-        // только если покупатель разрешил сохранить метод оплаты
-        if (payment.payment_method.saved) {
-            UUID methodId = payment.payment_method.id;
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("somedata", "Some data");
 
-            yookassa.createRecurrentPayment(methodId,
-                    new Amount(BigDecimal.valueOf(1), "EUR"), "ты сохранил карту и потерял евро");
-        }
+        Payment payment = yookassa.createPayment(new Amount(BigDecimal.valueOf(1), "RUB"), "Test Payment", "https://suuft.naifu.works", jsonObject);
+        System.out.println(payment);
+        System.out.println(payment.metadata);
+        System.out.println(payment.confirmation);
 
-        System.out.println("bill link:" + payment.confirmation.confirmation_url);
-
-        System.out.println(yookassa.createPayment(new Amount(BigDecimal.valueOf(1), "RUB"), "test", "https://suuft.naifu.works").confirmation.confirmation_url);
     }
 }

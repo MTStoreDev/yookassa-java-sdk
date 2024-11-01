@@ -1,5 +1,6 @@
 package me.dynomake.yookassa;
 
+import com.google.gson.JsonElement;
 import lombok.NonNull;
 import me.dynomake.yookassa.event.YookassaEvent;
 import me.dynomake.yookassa.exception.BadRequestException;
@@ -20,8 +21,12 @@ public interface Yookassa {
 
     Payment createPayment(@NonNull Amount amount, @NonNull String description, @NonNull String redirectUrl) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
+    Payment createPayment(@NonNull Amount amount, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException;
+
     // payment types: https://yookassa.ru/developers/payment-acceptance/getting-started/payment-methods#all
     Payment createPayment(@NonNull String type, @NonNull boolean saveMethod, @NonNull Amount amount, @NonNull String description, @NonNull String redirectUrl) throws UnspecifiedShopInformation, BadRequestException, IOException;
+
+    Payment createPayment(@NonNull String type, @NonNull boolean saveMethod, @NonNull Amount amount, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
     Payment createRecurrentPayment(@NonNull UUID methodId, @NonNull Amount amount, @NonNull String description) throws UnspecifiedShopInformation, BadRequestException, IOException;
 

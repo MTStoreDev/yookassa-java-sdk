@@ -6,8 +6,8 @@ plugins {
 group 'io.github.dynomake'
 version '1.0.5'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 17
+targetCompatibility = 17
 
 repositories {
     mavenCentral()
@@ -21,23 +21,24 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.encoding = "UTF-8"
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "clojars"
-            url = uri("https://clojars.org/repo")
-            credentials {
-                username = clojarsUserName
-                password = clojarsDeployToken
-            }
-        }
-
-    }
     publications {
-        gpr(MavenPublication) {
-            from(components.java)
+        maven(MavenPublication) {
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+            from components.java
         }
     }
 }

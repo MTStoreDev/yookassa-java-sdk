@@ -1,11 +1,12 @@
 package me.dynomake.yookassa.model.request;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import me.dynomake.yookassa.model.Amount;
-import me.dynomake.yookassa.model.Payment;
 
 import java.util.UUID;
 
@@ -18,15 +19,24 @@ public class PaymentRequest {
     boolean capture;
     String description;
     PaymentMethodData payment_method_data;
+    JsonElement metadata;
     boolean save_payment_method;
     UUID payment_method_id;
 
     public static PaymentRequest create(Amount amount, String urlRedirect, String description) {
-        return new PaymentRequest(amount, new ConfirmationType(urlRedirect), true, description, null, false, null);
+        return new PaymentRequest(amount, new ConfirmationType(urlRedirect), true, description, null, new JsonObject(),false, null);
+    }
+
+    public static PaymentRequest create(Amount amount, String urlRedirect, String description, JsonElement metadata) {
+        return new PaymentRequest(amount, new ConfirmationType(urlRedirect), true, description, null, metadata,false, null);
     }
 
     public static PaymentRequest create(Amount amount, String urlRedirect, String description, String paymentMethod, boolean save) {
-        return new PaymentRequest(amount, new ConfirmationType(urlRedirect), true, description, new PaymentMethodData(paymentMethod), save, null);
+        return new PaymentRequest(amount, new ConfirmationType(urlRedirect), true, description, new PaymentMethodData(paymentMethod), new JsonObject(), save, null);
+    }
+
+    public static PaymentRequest create(Amount amount, String urlRedirect, String description, String paymentMethod, JsonElement metadata, boolean save) {
+        return new PaymentRequest(amount, new ConfirmationType(urlRedirect), true, description, new PaymentMethodData(paymentMethod), metadata, save, null);
     }
 
     @AllArgsConstructor
