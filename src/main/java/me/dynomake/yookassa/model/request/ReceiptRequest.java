@@ -1,14 +1,15 @@
-package me.dynomake.yookassa.model;
+package me.dynomake.yookassa.model.request;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import me.dynomake.yookassa.model.Amount;
 
 import java.util.Set;
 
 @Data
 @FieldDefaults(level = AccessLevel.PUBLIC)
-public class Receipt {
+public class ReceiptRequest {
     CustomerType customer;
     Set<ItemType> items;
     @Deprecated

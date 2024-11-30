@@ -6,16 +6,13 @@ import lombok.NonNull;
 import me.dynomake.yookassa.Yookassa;
 import me.dynomake.yookassa.exception.BadRequestException;
 import me.dynomake.yookassa.model.*;
-import me.dynomake.yookassa.model.request.RecurrentPaymentRequest;
+import me.dynomake.yookassa.model.request.*;
 import me.dynomake.yookassa.utility.JsonUtil;
 import me.dynomake.yookassa.event.YookassaEvent;
 import me.dynomake.yookassa.exception.UnspecifiedShopInformation;
 import me.dynomake.yookassa.model.collecting.PaymentList;
 import me.dynomake.yookassa.model.collecting.RefundList;
 import me.dynomake.yookassa.model.collecting.WebhookList;
-import me.dynomake.yookassa.model.request.PaymentRequest;
-import me.dynomake.yookassa.model.request.RefundRequest;
-import me.dynomake.yookassa.model.request.WebhookRequest;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
@@ -39,7 +36,7 @@ public class RealYookassa implements Yookassa {
     }
 
     @Override
-    public Payment createPayment(@NonNull Amount amount, @NonNull Receipt receipt, @NonNull String description, @NonNull String redirectUrl) throws UnspecifiedShopInformation, BadRequestException, IOException {
+    public Payment createPayment(@NonNull Amount amount, @NonNull ReceiptRequest receipt, @NonNull String description, @NonNull String redirectUrl) throws UnspecifiedShopInformation, BadRequestException, IOException {
         return parseResponse(Payment.class, "https://api.yookassa.ru/v3/payments", "POST", JsonUtil.toJson(PaymentRequest.create(amount, receipt, redirectUrl, description)));
     }
 
@@ -49,7 +46,7 @@ public class RealYookassa implements Yookassa {
     }
 
     @Override
-    public Payment createPayment(@NonNull Amount amount, @NonNull Receipt receipt, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException {
+    public Payment createPayment(@NonNull Amount amount, @NonNull ReceiptRequest receipt, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException {
         return parseResponse(Payment.class, "https://api.yookassa.ru/v3/payments", "POST", JsonUtil.toJson(PaymentRequest.create(amount, receipt, redirectUrl, description, metadata)));
     }
 
@@ -64,7 +61,7 @@ public class RealYookassa implements Yookassa {
     }
 
     @Override
-    public Payment createPayment(@NonNull String paymentMethod, boolean saveMethod, @NonNull Amount amount, @NonNull Receipt receipt, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException {
+    public Payment createPayment(@NonNull String paymentMethod, boolean saveMethod, @NonNull Amount amount, @NonNull ReceiptRequest receipt, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException {
         return parseResponse(Payment.class, "https://api.yookassa.ru/v3/payments", "POST", JsonUtil.toJson(PaymentRequest.create(amount, receipt, redirectUrl, description, paymentMethod, metadata, saveMethod)));
     }
 
@@ -80,7 +77,12 @@ public class RealYookassa implements Yookassa {
 
     @Override
     public PaymentList getPayments() throws UnspecifiedShopInformation, BadRequestException, IOException {
-        return parseResponse(PaymentList.class, "https://api.yookassa.ru/v3/payments", "GET", null);
+        return parseResponse(PaymentList.class, "https://api.yookassa.ru/v3/receipts", "GET", null);
+    }
+
+    @Override
+    public Object getReceipts() throws UnspecifiedShopInformation, BadRequestException, IOException {
+        return parseResponse(Object.class, "https://api.yookassa.ru/v3/payments", "GET", null);
     }
 
     @Override

@@ -10,6 +10,7 @@ import me.dynomake.yookassa.model.*;
 import me.dynomake.yookassa.model.collecting.PaymentList;
 import me.dynomake.yookassa.model.collecting.RefundList;
 import me.dynomake.yookassa.model.collecting.WebhookList;
+import me.dynomake.yookassa.model.request.ReceiptRequest;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -18,18 +19,18 @@ public interface Yookassa {
 
     Payment createPayment(@NonNull Amount amount, @NonNull String description, @NonNull String redirectUrl) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
-    Payment createPayment(@NonNull Amount amount, @NonNull Receipt receipt, @NonNull String description, @NonNull String redirectUrl) throws UnspecifiedShopInformation, BadRequestException, IOException;
+    Payment createPayment(@NonNull Amount amount, @NonNull ReceiptRequest receipt, @NonNull String description, @NonNull String redirectUrl) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
     Payment createPayment(@NonNull Amount amount, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
-    Payment createPayment(@NonNull Amount amount, @NonNull Receipt receipt, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException;
+    Payment createPayment(@NonNull Amount amount, @NonNull ReceiptRequest receipt, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
     // payment types: https://yookassa.ru/developers/payment-acceptance/getting-started/payment-methods#all
     Payment createPayment(@NonNull String type, @NonNull boolean saveMethod, @NonNull Amount amount, @NonNull String description, @NonNull String redirectUrl) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
     Payment createPayment(@NonNull String type, @NonNull boolean saveMethod, @NonNull Amount amount, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
-    Payment createPayment(@NonNull String type, @NonNull boolean saveMethod, @NonNull Amount amount, @NonNull Receipt receipt, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException;
+    Payment createPayment(@NonNull String type, @NonNull boolean saveMethod, @NonNull Amount amount, @NonNull ReceiptRequest receipt, @NonNull String description, @NonNull String redirectUrl, @NonNull JsonElement metadata) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
     Payment createRecurrentPayment(@NonNull UUID methodId, @NonNull Amount amount, @NonNull String description) throws UnspecifiedShopInformation, BadRequestException, IOException;
 
@@ -37,6 +38,8 @@ public interface Yookassa {
 
     // todo: limit, filters (status, date, paidDate..)
     PaymentList getPayments() throws UnspecifiedShopInformation, BadRequestException, IOException;
+
+    Object getReceipts() throws UnspecifiedShopInformation, BadRequestException, IOException;
 
     Refund createRefund(@NonNull UUID paymentIdentifier, @NonNull Amount amount) throws UnspecifiedShopInformation, BadRequestException, IOException;
 

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import me.dynomake.yookassa.model.Amount;
-import me.dynomake.yookassa.model.Receipt;
 
 import java.util.UUID;
 
@@ -16,7 +15,7 @@ import java.util.UUID;
 public class PaymentRequest {
 
     Amount amount;
-    Receipt receipt;
+    ReceiptRequest receipt;
     ConfirmationType confirmation;
     boolean capture;
     String description;
@@ -29,7 +28,7 @@ public class PaymentRequest {
         return new PaymentRequest(amount, null, new ConfirmationType(urlRedirect), true, description, null, new JsonObject(),false, null);
     }
 
-    public static PaymentRequest create(Amount amount, Receipt receipt, String urlRedirect, String description) {
+    public static PaymentRequest create(Amount amount, ReceiptRequest receipt, String urlRedirect, String description) {
         return new PaymentRequest(amount, receipt, new ConfirmationType(urlRedirect), true, description, null, new JsonObject(),false, null);
     }
 
@@ -38,7 +37,7 @@ public class PaymentRequest {
         return new PaymentRequest(amount, null, new ConfirmationType(urlRedirect), true, description, null, metadata,false, null);
     }
 
-    public static PaymentRequest create(Amount amount, Receipt receipt, String urlRedirect, String description, JsonElement metadata) {
+    public static PaymentRequest create(Amount amount, ReceiptRequest receipt, String urlRedirect, String description, JsonElement metadata) {
         return new PaymentRequest(amount, receipt, new ConfirmationType(urlRedirect), true, description, null, metadata,false, null);
     }
 
@@ -50,7 +49,7 @@ public class PaymentRequest {
         return new PaymentRequest(amount, null, new ConfirmationType(urlRedirect), true, description, new PaymentMethodData(paymentMethod), metadata, save, null);
     }
 
-    public static PaymentRequest create(Amount amount, Receipt receipt, String urlRedirect, String description, String paymentMethod, JsonElement metadata, boolean save) {
+    public static PaymentRequest create(Amount amount, ReceiptRequest receipt, String urlRedirect, String description, String paymentMethod, JsonElement metadata, boolean save) {
         return new PaymentRequest(amount, receipt, new ConfirmationType(urlRedirect), true, description, new PaymentMethodData(paymentMethod), metadata, save, null);
     }
 
